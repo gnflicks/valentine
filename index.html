@@ -2,152 +2,170 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>A Special Question</title>
     <style>
         :root {
-            --soft-pink: #fce4ec;
-            --dark-pink: #f06292;
-            --text-color: #880e4f;
+            --soft-pink: #fdf2f5;
+            --accent-pink: #f48fb1;
+            --text-dark: #5c0a25;
         }
 
-        body {
+        body, html {
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: var(--soft-pink);
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            color: var(--text-color);
-            overflow: hidden;
-        }
-
-        .flower-bg {
-            position: absolute;
             width: 100%;
             height: 100%;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            gap: 20px;
-            padding: 20px;
-            z-index: -1;
-            opacity: 0.4;
+            overflow: hidden; /* Prevents scrolling during button chase */
+            background-color: var(--soft-pink);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .flower-bg img {
+        /* Flower Background Overlay */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .bg-overlay img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 15px;
         }
 
-        .container {
+        .content {
+            position: relative;
+            z-index: 10;
+            width: 85%;
+            max-width: 400px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(8px);
-            padding: 3rem;
-            border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            border-radius: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
         }
 
         h1 {
             font-weight: 300;
-            letter-spacing: 2px;
-            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+            line-height: 1.4;
         }
 
         .btn-group {
             display: flex;
-            gap: 20px;
-            justify-content: center;
+            flex-direction: column; /* Stacked for mobile ease */
+            gap: 15px;
             align-items: center;
         }
 
         button {
-            padding: 12px 40px;
-            border: 1px solid var(--dark-pink);
-            border-radius: 50px;
-            background: transparent;
-            color: var(--dark-pink);
+            width: 100%;
+            max-width: 200px;
+            padding: 16px;
+            border-radius: 30px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: transform 0.2s active;
             cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            touch-action: manipulation; /* Optimizes for mobile taps */
         }
 
         #yesBtn {
-            background-color: var(--dark-pink);
+            background-color: var(--accent-pink);
             color: white;
-        }
-
-        #yesBtn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(240, 98, 146, 0.4);
+            box-shadow: 0 8px 20px rgba(244, 143, 177, 0.3);
         }
 
         #noBtn {
-            position: relative;
+            background-color: white;
+            color: var(--accent-pink);
+            border: 1px solid var(--accent-pink);
+            z-index: 100;
         }
 
-        .success-msg {
+        .success {
             display: none;
-            font-size: 1.5rem;
-            font-style: italic;
-            animation: fadeIn 1s;
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            animation: fadeIn 0.8s ease forwards;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <div class="flower-bg">
-        <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=600&q=80" alt="flower">
-        <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=600&q=80" alt="flower">
-        <img src="https://images.unsplash.com/photo-1554631221-f9603e6808be?auto=format&fit=crop&w=600&q=80" alt="flower">
-        <img src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=600&q=80" alt="flower">
+    <div class="bg-overlay">
+        <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?q=80&w=500" alt="pink flower">
+        <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=500" alt="pink flower">
+        <img src="https://images.unsplash.com/photo-1554631221-f9603e6808be?q=80&w=500" alt="pink flower">
+        <img src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?q=80&w=500" alt="pink flower">
     </div>
 
-    <div class="container" id="mainContainer">
-        <h1 id="question">Arushi will you be my Valentine?</h1>
-        <div class="btn-group" id="btnGroup">
-            <button id="yesBtn">Yes</button>
-            <button id="noBtn">No</button>
+    <div class="content">
+        <div id="ui">
+            <h1>Will you be my<br><strong>Valentine?</strong></h1>
+            <div class="btn-group">
+                <button id="yesBtn">Yes</button>
+                <button id="noBtn">No</button>
+            </div>
         </div>
-        <div id="successMsg" class="success-msg">Thank you my awesome adorable amazing arushi 
-            and 
-            Happy early birthday! ♡</div>
+        <div id="success" class="success">
+            <p>Yay! I can't wait. ❤️</p>
+        </div>
     </div>
 
     <script>
-        const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
-        const btnGroup = document.getElementById('btnGroup');
-        const successMsg = document.getElementById('successMsg');
-        const question = document.getElementById('question');
+        const yesBtn = document.getElementById('yesBtn');
+        const ui = document.getElementById('ui');
+        const success = document.getElementById('success');
 
-        noBtn.addEventListener('mouseover', () => {
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+        // Logic for mobile-friendly "No" button jump
+        const moveButton = () => {
+            // Subtract button width/height to keep it inside the screen
+            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 20;
             
-            noBtn.style.position = 'absolute';
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        };
+
+        // Triggers on both hover (desktop) and touch (mobile)
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevents accidental clicking on mobile
+            moveButton();
         });
+        noBtn.addEventListener('mouseover', moveButton);
 
         yesBtn.addEventListener('click', () => {
-            question.style.display = 'none';
-            btnGroup.style.display = 'none';
-            successMsg.style.display = 'block';
+            ui.style.display = 'none';
+            success.style.display = 'block';
         });
     </script>
 </body>
-
 </html>
-
